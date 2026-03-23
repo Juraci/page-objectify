@@ -1,0 +1,33 @@
+{
+  "name": "page-objectify",
+  "version": "0.0.1",
+  "description": "Page Objectify Chrome Extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "postinstall": "wxt prepare",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/eslint": "^9.6.1",
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^4.1.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "happy-dom": "^20.8.7",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.57.2",
+    "vitest": "^4.1.1",
+    "wxt": "^0.20.20"
+  }
+}
