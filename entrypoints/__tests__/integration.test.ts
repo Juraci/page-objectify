@@ -26,12 +26,15 @@ describe("analyzes the page elements and prints the locators", () => {
       const panel = createSidePanel();
       panel.shadowRoot!.querySelector<HTMLButtonElement>("#analyze-btn")!.click();
 
-      expect(
-        panel.shadowRoot!.querySelector<HTMLDivElement>("#message-area")!.textContent,
-      ).toContain("page.locator('[data-test-login-btn]')");
-      expect(
-        panel.shadowRoot!.querySelector<HTMLDivElement>("#message-area")!.textContent,
-      ).toContain("page.getByLabel('Cancel')");
+      const messageArea = panel.shadowRoot!.querySelector<HTMLDivElement>("#message-area")!;
+
+      expect(messageArea.textContent).toContain("page.locator('[data-test-login-btn]')");
+      expect(messageArea.textContent).toContain("page.getByLabel('Cancel')");
+
+      expect(messageArea.querySelector("pre.code-block")).not.toBeNull();
+      expect(messageArea.querySelectorAll(".hl-method").length).toBeGreaterThan(0);
+      expect(messageArea.querySelectorAll(".hl-string").length).toBeGreaterThan(0);
+      expect(panel.shadowRoot!.querySelector("#copy-btn")).not.toBeNull();
     });
   });
 });

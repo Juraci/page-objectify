@@ -1,6 +1,7 @@
 import { defineContentScript } from "wxt/utils/define-content-script";
 import Buttons from "./collections/buttons";
 import Wrapper from "./wrapper";
+import { highlightLocators } from "./highlighter";
 
 import panelHtml from "./panel.html?raw";
 
@@ -28,10 +29,31 @@ export function createSidePanel(): HTMLDivElement {
 
 export function analyze(root: ShadowRoot | Document = document): void {
   const messageArea = root.querySelector<HTMLElement>("#message-area");
-  if (messageArea) {
-    const buttons = new Buttons();
-    const wrapper = new Wrapper([buttons]);
-    messageArea.textContent = wrapper.scan().join("\n");
+  if (!messageArea) return;
+
+  const buttons = new Buttons();
+  const wrapper = new Wrapper([buttons]);
+  const lines = wrapper.scan().flatMap((s) => s.split(/(?=page\.)/).filter(Boolean));
+
+  messageArea.innerHTML = highlightLocators(lines);
+
+  const container = root.querySelector<HTMLElement>("#results-container");
+  container?.classList.toggle("has-results", lines.length > 0);
+
+  const copyBtn = root.querySelector<HTMLButtonElement>("#copy-btn");
+  if (copyBtn) {
+    const fresh = copyBtn.cloneNode(true) as HTMLButtonElement;
+    copyBtn.replaceWith(fresh);
+    fresh.addEventListener("click", () => {
+      void navigator.clipboard.writeText(lines.join("\n")).then(() => {
+        fresh.textContent = "Copied!";
+        fresh.classList.add("copied");
+        setTimeout(() => {
+          fresh.textContent = "Copy";
+          fresh.classList.remove("copied");
+        }, 1500);
+      });
+    });
   }
 }
 

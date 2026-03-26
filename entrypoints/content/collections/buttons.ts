@@ -12,6 +12,6 @@ export default class Buttons {
         result.push(`page.getByLabel('${el.getAttribute("aria-label")}')`);
       }
     });
-    return result.join(", ");
+    return result.join(" ");
   }
 }
