@@ -1,25 +1,31 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { createBanner, injectBanner } from "../content";
+import { createSidePanel, injectSidePanel } from "../content";
 
-describe("createBanner", () => {
-  it("creates a div with the correct id", () => {
-    expect(createBanner().id).toBe("page-objectify-banner");
+describe("createSidePanel", () => {
+  it("creates a host div with the correct id", () => {
+    expect(createSidePanel().id).toBe("page-objectify-panel-host");
   });
 
-  it("contains the expected text", () => {
-    expect(createBanner().textContent).toBe("Hello World — Page Objectify");
+  it("attaches an open shadow root", () => {
+    expect(createSidePanel().shadowRoot).not.toBeNull();
   });
 
-  it("has fixed position", () => {
-    expect(createBanner().style.position).toBe("fixed");
+  it("shadow root contains the analyze button", () => {
+    const panel = createSidePanel();
+    expect(panel.shadowRoot!.querySelector("#analyze-btn")).not.toBeNull();
+  });
+
+  it("shadow root contains the message area", () => {
+    const panel = createSidePanel();
+    expect(panel.shadowRoot!.querySelector("#message-area")).not.toBeNull();
   });
 
   it("does not attach itself to the document", () => {
-    expect(document.contains(createBanner())).toBe(false);
+    expect(document.contains(createSidePanel())).toBe(false);
   });
 });
 
-describe("injectBanner", () => {
+describe("injectSidePanel", () => {
   let container: HTMLDivElement;
 
   beforeEach(() => {
@@ -31,24 +37,18 @@ describe("injectBanner", () => {
     container.remove();
   });
 
-  it("injects the banner into the provided root", () => {
-    injectBanner(container);
-    expect(container.querySelector("#page-objectify-banner")).not.toBeNull();
-  });
-
-  it("prepends the banner as the first child", () => {
-    container.appendChild(document.createElement("p"));
-    injectBanner(container);
-    expect(container.firstElementChild?.id).toBe("page-objectify-banner");
+  it("injects the panel into the provided root", () => {
+    injectSidePanel(container);
+    expect(container.querySelector("#page-objectify-panel-host")).not.toBeNull();
   });
 
   it("is idempotent — no duplicate on second call", () => {
-    injectBanner(container);
-    injectBanner(container);
-    expect(container.querySelectorAll("#page-objectify-banner")).toHaveLength(1);
+    injectSidePanel(container);
+    injectSidePanel(container);
+    expect(container.querySelectorAll("#page-objectify-panel-host")).toHaveLength(1);
   });
 
   it("returns the same element on repeated calls", () => {
-    expect(injectBanner(container)).toBe(injectBanner(container));
+    expect(injectSidePanel(container)).toBe(injectSidePanel(container));
   });
 });

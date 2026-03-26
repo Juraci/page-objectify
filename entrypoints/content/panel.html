@@ -1,0 +1,95 @@
+<style>
+  .panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 400px;
+    background-color: #2e3440;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.4);
+    z-index: 2147483647;
+    display: flex;
+    flex-direction: column;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+  }
+
+  .panel-header {
+    padding: 16px;
+    background-color: #3b4252;
+    color: #eceff4;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .panel-body {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #message-area {
+    min-height: 24px;
+    color: #d8dee9;
+  }
+
+  #analyze-btn {
+    padding: 8px 16px;
+    background-color: #81a1c1;
+    color: #2e3440;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    align-self: center;
+  }
+
+  #analyze-btn:hover {
+    background-color: #88c0d0;
+  }
+
+  .panel {
+    transition: transform 0.3s ease;
+  }
+
+  .panel.hidden {
+    transform: translateX(100%);
+  }
+
+  #toggle-btn {
+    position: fixed;
+    top: 50%;
+    right: 400px;
+    transform: translateY(-50%);
+    background-color: #3b4252;
+    color: #88c0d0;
+    border: none;
+    border-radius: 6px 0 0 6px;
+    padding: 12px 6px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    z-index: 2147483647;
+    transition: right 0.3s ease, background-color 0.15s ease;
+  }
+
+  #toggle-btn:hover {
+    background-color: #434c5e;
+  }
+
+  .panel.hidden ~ #toggle-btn {
+    right: 0;
+  }
+</style>
+
+<div class="panel">
+  <div class="panel-header">Page Objectify</div>
+  <div class="panel-body">
+    <button id="analyze-btn">Analyze Page</button>
+    <div id="message-area"></div>
+  </div>
+</div>
+<button id="toggle-btn">&#x276E;</button>
