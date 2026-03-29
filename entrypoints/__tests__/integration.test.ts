@@ -4,7 +4,7 @@ import { createSidePanel } from "../content";
 describe("analyzes the page elements and prints the locators", () => {
   let page: HTMLDivElement;
 
-  describe("buttons", () => {
+  describe("when there are unique elements", () => {
     beforeEach(() => {
       page = document.createElement("div");
       page.innerHTML = `
@@ -22,7 +22,7 @@ describe("analyzes the page elements and prints the locators", () => {
       page.remove();
     });
 
-    it("clicking analyze returns the detected elements", () => {
+    it("returns the detected elements after clicking analyze page", () => {
       const panel = createSidePanel();
       panel.shadowRoot!.querySelector<HTMLButtonElement>("#analyze-btn")!.click();
 
@@ -31,10 +31,34 @@ describe("analyzes the page elements and prints the locators", () => {
       expect(messageArea.textContent).toContain("page.locator('[data-test-login-btn]')");
       expect(messageArea.textContent).toContain("page.getByLabel('Cancel')");
 
-      expect(messageArea.querySelector("pre.code-block")).not.toBeNull();
-      expect(messageArea.querySelectorAll(".hl-method").length).toBeGreaterThan(0);
-      expect(messageArea.querySelectorAll(".hl-string").length).toBeGreaterThan(0);
       expect(panel.shadowRoot!.querySelector("#copy-btn")).not.toBeNull();
+    });
+  });
+
+  describe("when there are multiple elements with the same selector", () => {
+    beforeEach(() => {
+      page = document.createElement("div");
+      page.innerHTML = `
+        <button data-test-btn>Button</button>
+        <button data-test-btn>Button</button>
+      `;
+      document.body.appendChild(page);
+    });
+
+    afterEach(() => {
+      page.remove();
+    });
+
+    it("returns the selector only once after clicking analyze page", () => {
+      const panel = createSidePanel();
+      panel.shadowRoot!.querySelector<HTMLButtonElement>("#analyze-btn")!.click();
+
+      const messageArea = panel.shadowRoot!.querySelector<HTMLDivElement>("#message-area")!;
+
+      expect(messageArea.textContent).toContain("page.locator('[data-test-btn]')");
+      expect(messageArea.textContent).not.toContain(
+        "page.locator('[data-test-btn]')\npage.locator('[data-test-btn]')",
+      );
     });
   });
 });

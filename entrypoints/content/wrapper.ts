@@ -1,5 +1,5 @@
 interface ElementCollection {
-  get(): string;
+  get(): string[];
 }
 
 export default class Wrapper {
@@ -12,9 +12,9 @@ export default class Wrapper {
   scan(): string[] {
     const snippets: string[] = [];
     this.metacollection.forEach((elementCollection) => {
-      console.log(`>>> ${elementCollection.get()}`);
-      snippets.push(elementCollection.get());
+      snippets.push(...elementCollection.get());
     });
+    console.log(`>>>>> snippets: ${JSON.stringify(snippets)}`);
     return snippets;
   }
 }
