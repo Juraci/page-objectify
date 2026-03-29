@@ -1,9 +1,13 @@
 export default class Buttons {
-  constructor() {}
+  private result: string[];
+  private seen: Set<string>;
+
+  constructor() {
+    this.result = [];
+    this.seen = new Set<string>();
+  }
 
   get(): string[] {
-    const seen = new Set<string>();
-    const result: string[] = [];
     const elements = document.querySelectorAll("button");
     elements.forEach((el) => {
       const dataSelector = el.getAttributeNames().filter((name) => name.startsWith("data-test"))[0];
@@ -15,11 +19,22 @@ export default class Buttons {
       } else if (el.getAttribute("aria-label")) {
         locator = `page.getByLabel('${el.getAttribute("aria-label")}')`;
       }
-      if (locator && !seen.has(locator)) {
-        seen.add(locator);
-        result.push(locator);
-      }
+      if (!locator) return;
+
+      this.shine(el);
+
+      if (this.seen.has(locator)) return;
+
+      this.seen.add(locator);
+      this.result.push(locator);
     });
-    return result;
+    return this.result;
+  }
+
+  protected shine(element: HTMLElement): void {
+    const boxShadow = "0 0 15px rgba(81, 250, 200, 1)";
+    const border = "1px solid rgba(81, 250, 200, 1)";
+    element.style.boxShadow = boxShadow;
+    element.style.border = border;
   }
 }

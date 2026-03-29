@@ -20,6 +20,14 @@ describe("Buttons", () => {
     expect(buttons.get()).toStrictEqual(["page.locator('[data-test-submit-btn]')"]);
   });
 
+  it("highlights the button when a locator is generated", () => {
+    container.innerHTML = `<button data-test-submit-btn>Submit</button>`;
+    const button = container.querySelector("button") as HTMLElement;
+    buttons.get();
+    expect(button.style.boxShadow).toBe("0 0 15px rgba(81, 250, 200, 1)");
+    expect(button.style.border).toBe("1px solid rgba(81, 250, 200, 1)");
+  });
+
   it("returns a getByLabel locator for a button with aria-label", () => {
     container.innerHTML = `<button aria-label="Close">X</button>`;
     expect(buttons.get()).toStrictEqual(["page.getByLabel('Close')"]);
