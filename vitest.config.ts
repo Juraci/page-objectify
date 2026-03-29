@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     include: ["**/__tests__/**/*.test.ts", "**/*.test.ts", "**/*.spec.ts"],
-    exclude: ["node_modules/**", ".output/**", ".wxt/**"],
+    exclude: ["node_modules/**", ".output/**", ".wxt/**", ".worktrees/**"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],
