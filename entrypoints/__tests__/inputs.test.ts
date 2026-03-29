@@ -76,6 +76,11 @@ describe("Inputs", () => {
     expect(inputs.get()).toStrictEqual([]);
   });
 
+  it("skips an input with no recognized attributes", () => {
+    container.innerHTML = `<input />`;
+    expect(inputs.get()).toStrictEqual([]);
+  });
+
   it("returns empty array when there are no inputs", () => {
     expect(inputs.get()).toStrictEqual([]);
   });
