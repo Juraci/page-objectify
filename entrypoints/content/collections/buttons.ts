@@ -16,7 +16,7 @@ export default class Buttons {
       if (dataSelector) {
         locator = `page.locator('[${dataSelector}]')`;
       } else if (el.className) {
-        locator = `page.locator('button.${el.className.trim().split(/\s+/).slice(0, 2).join(".")}')`;
+        locator = `page.locator('.${el.className.trim().split(/\s+/).slice(0, 2).join(".")}')`;
       } else if (el.getAttribute("aria-label")) {
         locator = `page.getByLabel('${el.getAttribute("aria-label")}')`;
       } else if (el.textContent && el.textContent.trim().length > this.minimumValueLength) {

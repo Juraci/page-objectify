@@ -32,7 +32,7 @@ describe("analyzes the page elements and prints the locators", () => {
 
       expect(messageArea.textContent).toContain("page.locator('[data-test-login-btn]')");
       expect(messageArea.textContent).toContain("page.getByLabel('Cancel')");
-      expect(messageArea.textContent).toContain("page.locator('button.reset-email')");
+      expect(messageArea.textContent).toContain("page.locator('.reset-email')");
       expect(messageArea.textContent).toContain("page.getByRole('button', { name: 'Submit' })");
 
       expect(panel.shadowRoot!.querySelector("#copy-btn")).not.toBeNull();

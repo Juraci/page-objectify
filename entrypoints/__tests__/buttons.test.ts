@@ -35,7 +35,7 @@ describe("Buttons", () => {
 
   it("returns a locator for a button with a class", () => {
     container.innerHTML = `<button class="reset-email">Forgot Password?</button>`;
-    expect(buttons.get()).toStrictEqual(["page.locator('button.reset-email')"]);
+    expect(buttons.get()).toStrictEqual(["page.locator('.reset-email')"]);
   });
 
   it("returns a getByRole locator for a button with text content longer than the minimum length", () => {
