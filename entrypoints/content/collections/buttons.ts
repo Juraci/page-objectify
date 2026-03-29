@@ -1,3 +1,5 @@
+import { shine } from "./shine";
+
 export default class Buttons {
   private minimumValueLength: number = 3;
   private result: string[];
@@ -24,7 +26,7 @@ export default class Buttons {
       }
       if (!locator) return;
 
-      this.shine(el);
+      shine(el);
 
       if (this.seen.has(locator)) return;
 
@@ -32,12 +34,5 @@ export default class Buttons {
       this.result.push(locator);
     });
     return this.result;
-  }
-
-  protected shine(element: HTMLElement): void {
-    const boxShadow = "0 0 15px rgba(81, 250, 200, 1)";
-    const border = "1px solid rgba(81, 250, 200, 1)";
-    element.style.boxShadow = boxShadow;
-    element.style.border = border;
   }
 }

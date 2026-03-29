@@ -1,3 +1,5 @@
+import { shine } from "./shine";
+
 export default class Inputs {
   private minimumValueLength = 3;
   private result: string[] = [];
@@ -10,7 +12,7 @@ export default class Inputs {
     elements.forEach((el) => {
       const locator = this.resolveLocator(el);
       if (!locator) return;
-      this.shine(el);
+      shine(el);
       if (this.seen.has(locator)) return;
       this.seen.add(locator);
       this.result.push(locator);
@@ -51,10 +53,5 @@ export default class Inputs {
     }
 
     return null;
-  }
-
-  protected shine(element: HTMLElement): void {
-    element.style.boxShadow = "0 0 15px rgba(81, 250, 200, 1)";
-    element.style.border = "1px solid rgba(81, 250, 200, 1)";
   }
 }
