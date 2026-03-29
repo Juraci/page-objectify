@@ -39,6 +39,41 @@ describe("analyzes the page elements and prints the locators", () => {
     });
   });
 
+  describe("when there are inputs and textareas", () => {
+    beforeEach(() => {
+      page = document.createElement("div");
+      page.innerHTML = `
+        <form>
+          <input type="text"     data-test-username    placeholder="Username" />
+          <input type="email"    class="email-field"   placeholder="Email"    />
+          <input type="password" aria-label="Password" placeholder="Password" />
+          <input type="text"     placeholder="Search"  />
+          <textarea class="notes-field">Notes</textarea>
+        </form>
+      `;
+      document.body.appendChild(page);
+    });
+
+    afterEach(() => {
+      page.remove();
+    });
+
+    it("returns the detected inputs and textareas after clicking analyze page", () => {
+      const panel = createSidePanel();
+      panel.shadowRoot!.querySelector<HTMLButtonElement>("#analyze-btn")!.click();
+
+      const messageArea = panel.shadowRoot!.querySelector<HTMLDivElement>("#message-area")!;
+
+      expect(messageArea.textContent).toContain("page.locator('[data-test-username]')");
+      expect(messageArea.textContent).toContain("page.locator('.email-field')");
+      expect(messageArea.textContent).toContain("page.getByLabel('Password')");
+      expect(messageArea.textContent).toContain("page.getByPlaceholder('Search')");
+      expect(messageArea.textContent).toContain("page.locator('.notes-field')");
+
+      expect(panel.shadowRoot!.querySelector("#copy-btn")).not.toBeNull();
+    });
+  });
+
   describe("when there are multiple elements with the same selector", () => {
     beforeEach(() => {
       page = document.createElement("div");
