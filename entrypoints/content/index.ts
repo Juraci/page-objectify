@@ -8,6 +8,7 @@ import {
   detectLabel,
   detectClass,
   detectPlaceholder,
+  detectRole,
   type Detector,
 } from "./collections/detectors";
 
@@ -18,6 +19,7 @@ const DETECTOR_MAP: Record<string, Detector> = {
   label: detectLabel,
   class: detectClass,
   placeholder: detectPlaceholder,
+  role: detectRole,
 };
 
 function buildDetectors(root: ShadowRoot | Document): Detector[] {

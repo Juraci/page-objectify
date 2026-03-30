@@ -5,9 +5,10 @@ import {
   detectLabel,
   detectClass,
   detectPlaceholder,
+  detectRole,
 } from "../content/collections/detectors";
 
-const allDetectors = [detectDataTest, detectLabel, detectClass, detectPlaceholder];
+const allDetectors = [detectDataTest, detectLabel, detectClass, detectPlaceholder, detectRole];
 
 describe("Buttons", () => {
   let container: HTMLDivElement;

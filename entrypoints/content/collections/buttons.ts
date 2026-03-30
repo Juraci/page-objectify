@@ -1,8 +1,6 @@
 import { shine } from "./shine";
 import { type Detector } from "./detectors";
 
-const MINIMUM_TEXT_LENGTH = 3;
-
 export default class Buttons {
   private result: string[] = [];
   private seen = new Set<string>();
@@ -29,9 +27,6 @@ export default class Buttons {
     for (const detect of this.detectors) {
       const result = detect(el, document);
       if (result) return result;
-    }
-    if (el.textContent && el.textContent.trim().length > MINIMUM_TEXT_LENGTH) {
-      return `page.getByRole('button', { name: '${el.textContent.trim()}' })`;
     }
     return null;
   }

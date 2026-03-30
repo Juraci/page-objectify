@@ -14,8 +14,11 @@ export default class Inputs {
     elements.forEach((el) => {
       const locator = this.resolveLocator(el);
       if (!locator) return;
+
       shine(el);
+
       if (this.seen.has(locator)) return;
+
       this.seen.add(locator);
       this.result.push(locator);
     });
