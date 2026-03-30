@@ -56,7 +56,7 @@ function attachDragHandlers(shadow: ShadowRoot): void {
 
 export function createSidePanel(): HTMLDivElement {
   const host = document.createElement("div");
-  host.id = "page-objectify-panel-host";
+  host.id = "page-raptor-panel-host";
 
   const shadow = host.attachShadow({ mode: "open" });
   shadow.innerHTML = panelHtml;
@@ -120,7 +120,7 @@ export function analyze(root: ShadowRoot | Document = document): void {
 }
 
 export function injectSidePanel(root: HTMLElement = document.body): HTMLDivElement {
-  const existing = root.querySelector<HTMLDivElement>("#page-objectify-panel-host");
+  const existing = root.querySelector<HTMLDivElement>("#page-raptor-panel-host");
   if (existing) return existing;
 
   const panel = createSidePanel();

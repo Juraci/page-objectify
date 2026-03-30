@@ -3,7 +3,7 @@ import { createSidePanel, injectSidePanel } from "../content";
 
 describe("createSidePanel", () => {
   it("creates a host div with the correct id", () => {
-    expect(createSidePanel().id).toBe("page-objectify-panel-host");
+    expect(createSidePanel().id).toBe("page-raptor-panel-host");
   });
 
   it("attaches an open shadow root", () => {
@@ -39,13 +39,13 @@ describe("injectSidePanel", () => {
 
   it("injects the panel into the provided root", () => {
     injectSidePanel(container);
-    expect(container.querySelector("#page-objectify-panel-host")).not.toBeNull();
+    expect(container.querySelector("#page-raptor-panel-host")).not.toBeNull();
   });
 
   it("is idempotent — no duplicate on second call", () => {
     injectSidePanel(container);
     injectSidePanel(container);
-    expect(container.querySelectorAll("#page-objectify-panel-host")).toHaveLength(1);
+    expect(container.querySelectorAll("#page-raptor-panel-host")).toHaveLength(1);
   });
 
   it("returns the same element on repeated calls", () => {

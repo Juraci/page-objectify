@@ -1,7 +1,7 @@
 {
-  "name": "page-objectify",
+  "name": "page-raptor",
   "version": "0.0.1",
-  "description": "Page Objectify Chrome Extension",
+  "description": "Page Raptor Chrome Extension",
   "private": true,
   "type": "module",
   "scripts": {

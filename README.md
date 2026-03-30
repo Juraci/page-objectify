@@ -1,4 +1,4 @@
-# Page Objectify
+# Page Raptor
 
 A Chrome extension that scans any webpage and generates [Playwright](https://playwright.dev/) locator code for interactive elements.
 
