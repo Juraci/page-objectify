@@ -1,5 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import Inputs from "../content/collections/inputs";
+import {
+  detectDataTest,
+  detectLabel,
+  detectClass,
+  detectPlaceholder,
+} from "../content/collections/detectors";
+
+const allDetectors = [detectDataTest, detectLabel, detectClass, detectPlaceholder];
 
 describe("Inputs", () => {
   let container: HTMLDivElement;
@@ -8,7 +16,7 @@ describe("Inputs", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    inputs = new Inputs();
+    inputs = new Inputs(allDetectors);
   });
 
   afterEach(() => {
@@ -33,11 +41,6 @@ describe("Inputs", () => {
   it("returns a getByLabel locator for an input with an associated label element", () => {
     container.innerHTML = `<label for="q">Query</label><input id="q" />`;
     expect(inputs.get()).toStrictEqual(["page.getByLabel('Query')"]);
-  });
-
-  it("returns a locator for an input with a type attribute", () => {
-    container.innerHTML = `<input type="email" />`;
-    expect(inputs.get()).toStrictEqual(["page.locator('input[type=\"email\"]')"]);
   });
 
   it("returns a getByPlaceholder locator for an input with a placeholder", () => {

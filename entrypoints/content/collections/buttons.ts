@@ -1,29 +1,18 @@
 import { shine } from "./shine";
+import { type Detector } from "./detectors";
+
+const MINIMUM_TEXT_LENGTH = 3;
 
 export default class Buttons {
-  private minimumValueLength: number = 3;
-  private result: string[];
-  private seen: Set<string>;
+  private result: string[] = [];
+  private seen = new Set<string>();
 
-  constructor() {
-    this.result = [];
-    this.seen = new Set<string>();
-  }
+  constructor(private detectors: Detector[]) {}
 
   get(): string[] {
     const elements = document.querySelectorAll("button");
     elements.forEach((el) => {
-      const dataSelector = el.getAttributeNames().filter((name) => name.startsWith("data-test"))[0];
-      let locator: string | null = null;
-      if (dataSelector) {
-        locator = `page.locator('[${dataSelector}]')`;
-      } else if (el.getAttribute("aria-label")) {
-        locator = `page.getByLabel('${el.getAttribute("aria-label")}')`;
-      } else if (el.textContent && el.textContent.trim().length > this.minimumValueLength) {
-        locator = `page.getByRole('button', { name: '${el.textContent.trim()}' })`;
-      } else if (el.className) {
-        locator = `page.locator('.${el.className.trim().split(/\s+/).slice(0, 2).join(".")}')`;
-      }
+      const locator = this.resolveLocator(el);
       if (!locator) return;
 
       shine(el);
@@ -34,5 +23,16 @@ export default class Buttons {
       this.result.push(locator);
     });
     return this.result;
+  }
+
+  private resolveLocator(el: HTMLButtonElement): string | null {
+    for (const detect of this.detectors) {
+      const result = detect(el, document);
+      if (result) return result;
+    }
+    if (el.textContent && el.textContent.trim().length > MINIMUM_TEXT_LENGTH) {
+      return `page.getByRole('button', { name: '${el.textContent.trim()}' })`;
+    }
+    return null;
   }
 }

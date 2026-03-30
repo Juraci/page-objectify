@@ -1,5 +1,13 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import Buttons from "../content/collections/buttons";
+import {
+  detectDataTest,
+  detectLabel,
+  detectClass,
+  detectPlaceholder,
+} from "../content/collections/detectors";
+
+const allDetectors = [detectDataTest, detectLabel, detectClass, detectPlaceholder];
 
 describe("Buttons", () => {
   let container: HTMLDivElement;
@@ -8,7 +16,7 @@ describe("Buttons", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    buttons = new Buttons();
+    buttons = new Buttons(allDetectors);
   });
 
   afterEach(() => {

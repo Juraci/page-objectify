@@ -1,9 +1,11 @@
 import { shine } from "./shine";
+import { type Detector } from "./detectors";
 
 export default class Inputs {
-  private minimumValueLength = 3;
   private result: string[] = [];
   private seen = new Set<string>();
+
+  constructor(private detectors: Detector[]) {}
 
   get(): string[] {
     const elements = document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
@@ -12,7 +14,6 @@ export default class Inputs {
     elements.forEach((el) => {
       const locator = this.resolveLocator(el);
       if (!locator) return;
-      console.log(`>>> locator ${locator}`);
       shine(el);
       if (this.seen.has(locator)) return;
       this.seen.add(locator);
@@ -22,37 +23,10 @@ export default class Inputs {
   }
 
   private resolveLocator(el: HTMLInputElement | HTMLTextAreaElement): string | null {
-    // 1. data-test* attribute
-    const dataAttr = el.getAttributeNames().find((n) => n.startsWith("data-test"));
-    if (dataAttr) return `page.locator('[${dataAttr}]')`;
-
-    // 2. label (aria-label or associated <label>)
-    const ariaLabel = el.getAttribute("aria-label");
-    if (ariaLabel) return `page.getByLabel('${ariaLabel}')`;
-    const id = el.getAttribute("id");
-    if (id) {
-      const label = document.querySelector<HTMLLabelElement>(`label[for="${id}"]`);
-      if (label?.textContent?.trim()) return `page.getByLabel('${label.textContent.trim()}')`;
+    for (const detect of this.detectors) {
+      const result = detect(el, document);
+      if (result) return result;
     }
-
-    // 3. type (inputs only, skip textarea which has no type)
-    if (el.tagName === "INPUT") {
-      const type = (el as HTMLInputElement).type;
-      if (type && type !== "text") return `page.locator('input[type="${type}"]')`;
-    }
-
-    // 4. class
-    if (el.className.trim()) {
-      const classes = el.className.trim().split(/\s+/).slice(0, 2).join(".");
-      return `page.locator('.${classes}')`;
-    }
-
-    // 5. placeholder
-    const placeholder = el.getAttribute("placeholder");
-    if (placeholder && placeholder.trim().length > this.minimumValueLength) {
-      return `page.getByPlaceholder('${placeholder.trim()}')`;
-    }
-
     return null;
   }
 }

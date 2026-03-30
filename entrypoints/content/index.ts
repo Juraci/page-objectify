@@ -3,8 +3,64 @@ import Buttons from "./collections/buttons";
 import Inputs from "./collections/inputs";
 import Wrapper from "./wrapper";
 import { highlightLocators } from "./highlighter";
+import {
+  detectDataTest,
+  detectLabel,
+  detectClass,
+  detectPlaceholder,
+  type Detector,
+} from "./collections/detectors";
 
 import panelHtml from "./panel.html?raw";
+
+const DETECTOR_MAP: Record<string, Detector> = {
+  dataTest: detectDataTest,
+  label: detectLabel,
+  class: detectClass,
+  placeholder: detectPlaceholder,
+};
+
+function buildDetectors(root: ShadowRoot | Document): Detector[] {
+  const list = root.querySelector<HTMLUListElement>("#detector-list");
+  if (!list) return Object.values(DETECTOR_MAP);
+  const result: Detector[] = [];
+  list.querySelectorAll<HTMLLIElement>(".detector-item").forEach((item) => {
+    const key = item.dataset.detector;
+    const cb = item.querySelector<HTMLInputElement>("input[type='checkbox']");
+    if (key && cb?.checked && DETECTOR_MAP[key]) result.push(DETECTOR_MAP[key]);
+  });
+  return result;
+}
+
+function attachDragHandlers(shadow: ShadowRoot): void {
+  const list = shadow.querySelector<HTMLUListElement>("#detector-list");
+  if (!list) return;
+  let dragged: HTMLElement | null = null;
+
+  list.addEventListener("dragstart", (e) => {
+    dragged = (e.target as HTMLElement).closest(".detector-item");
+    dragged?.classList.add("dragging");
+  });
+
+  list.addEventListener("dragend", () => {
+    dragged?.classList.remove("dragging");
+    dragged = null;
+  });
+
+  list.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    if (!dragged) return;
+    const target = (e.target as HTMLElement).closest<HTMLElement>(".detector-item");
+    if (!target || target === dragged) return;
+    const rect = target.getBoundingClientRect();
+    const mid = rect.top + rect.height / 2;
+    if (e.clientY < mid) {
+      list.insertBefore(dragged, target);
+    } else {
+      list.insertBefore(dragged, target.nextSibling);
+    }
+  });
+}
 
 // Named exports — imported directly by tests (never via defineContentScript wrapper)
 
@@ -25,6 +81,8 @@ export function createSidePanel(): HTMLDivElement {
     if (toggleBtn) toggleBtn.textContent = hidden ? "❯" : "❮";
   });
 
+  attachDragHandlers(shadow);
+
   return host;
 }
 
@@ -32,7 +90,8 @@ export function analyze(root: ShadowRoot | Document = document): void {
   const messageArea = root.querySelector<HTMLElement>("#message-area");
   if (!messageArea) return;
 
-  const wrapper = new Wrapper([new Inputs(), new Buttons()]);
+  const detectors = buildDetectors(root);
+  const wrapper = new Wrapper([new Inputs(detectors), new Buttons(detectors)]);
   const lines = wrapper.scan();
 
   messageArea.innerHTML = highlightLocators(lines);
