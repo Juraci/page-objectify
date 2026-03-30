@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/icon.png" alt="Page Raptor logo" width="128" />
+</p>
+
 # Page Raptor
 
 A Chrome extension that scans any webpage and generates [Playwright](https://playwright.dev/) locator code for interactive elements.
