@@ -74,6 +74,39 @@ describe("analyzes the page elements and prints the locators", () => {
     });
   });
 
+  describe("when there are links", () => {
+    beforeEach(() => {
+      page = document.createElement("div");
+      page.innerHTML = `
+        <div>
+          <a href="#" data-test-home-link>Home</a>
+          <a href="#" class="about-link">About</a>
+          <a href="#" aria-label="Contact">Contact</a>
+          <a href="#">Login</a>
+        </div>
+      `;
+      document.body.appendChild(page);
+    });
+
+    afterEach(() => {
+      page.remove();
+    });
+
+    it("returns the detected links after clicking analyze page", () => {
+      const panel = createSidePanel();
+      panel.shadowRoot!.querySelector<HTMLButtonElement>("#analyze-btn")!.click();
+
+      const messageArea = panel.shadowRoot!.querySelector<HTMLDivElement>("#message-area")!;
+
+      expect(messageArea.textContent).toContain("page.locator('[data-test-home-link]')");
+      expect(messageArea.textContent).toContain("page.locator('.about-link')");
+      expect(messageArea.textContent).toContain("page.getByLabel('Contact')");
+      expect(messageArea.textContent).toContain("page.getByRole('link', { name: 'Login' })");
+
+      expect(panel.shadowRoot!.querySelector("#copy-btn")).not.toBeNull();
+    });
+  });
+
   describe("when there are multiple elements with the same selector", () => {
     beforeEach(() => {
       page = document.createElement("div");

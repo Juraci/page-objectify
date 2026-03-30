@@ -7,7 +7,7 @@ import {
   Role,
   Detectors,
   NullDetector,
-} from "../content/collections/detectors";
+} from "../content/detectors";
 
 describe("DataTest", () => {
   let container: HTMLDivElement;

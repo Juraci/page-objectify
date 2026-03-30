@@ -1,9 +1,10 @@
 import { defineContentScript } from "wxt/utils/define-content-script";
 import Buttons from "./collections/buttons";
 import Inputs from "./collections/inputs";
+import Links from "./collections/links";
 import Wrapper from "./wrapper";
 import { highlightLocators } from "./highlighter";
-import { Detectors, NullDetector, type Detector } from "./collections/detectors";
+import { Detectors, NullDetector, type Detector } from "./detectors";
 
 import panelHtml from "./panel.html?raw";
 
@@ -93,7 +94,7 @@ export function analyze(root: ShadowRoot | Document = document): void {
   if (!messageArea) return;
 
   const detectors = buildDetectors(root, new Detectors());
-  const wrapper = new Wrapper([new Inputs(detectors), new Buttons(detectors)]);
+  const wrapper = new Wrapper([new Inputs(detectors), new Buttons(detectors), new Links(detectors)]);
   const lines = wrapper.scan();
 
   messageArea.innerHTML = highlightLocators(lines);

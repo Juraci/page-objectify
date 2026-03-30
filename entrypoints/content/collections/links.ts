@@ -1,14 +1,14 @@
 import { shine } from "./shine";
 import { type Detector } from "../detectors";
 
-export default class Buttons {
+export default class Links {
   private result: string[] = [];
   private seen = new Set<string>();
 
   constructor(private detectors: Detector[]) {}
 
   get(): string[] {
-    const elements = document.querySelectorAll("button");
+    const elements = document.querySelectorAll("a");
     elements.forEach((el) => {
       const locator = this.resolveLocator(el);
       if (!locator) return;
@@ -23,7 +23,7 @@ export default class Buttons {
     return this.result;
   }
 
-  private resolveLocator(el: HTMLButtonElement): string | null {
+  private resolveLocator(el: HTMLAnchorElement): string | null {
     for (const detect of this.detectors) {
       const result = detect(el, document);
       if (result) return result;

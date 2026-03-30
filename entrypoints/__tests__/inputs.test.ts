@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import Inputs from "../content/collections/inputs";
-import { Detectors } from "../content/collections/detectors";
+import { Detectors } from "../content/detectors";
 
 const allDetectors = new Detectors().getAll().map((d) => d.perform);
 

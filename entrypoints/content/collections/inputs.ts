@@ -1,5 +1,5 @@
 import { shine } from "./shine";
-import { type Detector } from "./detectors";
+import { type Detector } from "../detectors";
 
 export default class Inputs {
   private result: string[] = [];
