@@ -3,33 +3,20 @@ import Buttons from "./collections/buttons";
 import Inputs from "./collections/inputs";
 import Wrapper from "./wrapper";
 import { highlightLocators } from "./highlighter";
-import {
-  detectDataTest,
-  detectLabel,
-  detectClass,
-  detectPlaceholder,
-  detectRole,
-  type Detector,
-} from "./collections/detectors";
+import { Detectors, NullDetector, type Detector } from "./collections/detectors";
 
 import panelHtml from "./panel.html?raw";
 
-const DETECTOR_MAP: Record<string, Detector> = {
-  dataTest: detectDataTest,
-  label: detectLabel,
-  class: detectClass,
-  placeholder: detectPlaceholder,
-  role: detectRole,
-};
-
-function buildDetectors(root: ShadowRoot | Document): Detector[] {
+function buildDetectors(root: ShadowRoot | Document, factory: Detectors): Detector[] {
   const list = root.querySelector<HTMLUListElement>("#detector-list");
-  if (!list) return Object.values(DETECTOR_MAP);
+  if (!list) return factory.getAll().map((d) => d.perform);
   const result: Detector[] = [];
   list.querySelectorAll<HTMLLIElement>(".detector-item").forEach((item) => {
     const key = item.dataset.detector;
     const cb = item.querySelector<HTMLInputElement>("input[type='checkbox']");
-    if (key && cb?.checked && DETECTOR_MAP[key]) result.push(DETECTOR_MAP[key]);
+    if (!key || !cb?.checked) return;
+    const d = factory.getByName(key);
+    if (!(d instanceof NullDetector)) result.push(d.perform);
   });
   return result;
 }
@@ -85,6 +72,19 @@ export function createSidePanel(): HTMLDivElement {
 
   attachDragHandlers(shadow);
 
+  const allDetectors = new Detectors();
+  const list = shadow.querySelector<HTMLUListElement>("#detector-list")!;
+  allDetectors.getAll().forEach((d) => {
+    const li = shadow.ownerDocument.createElement("li");
+    li.className = "detector-item";
+    li.draggable = true;
+    li.dataset.detector = d.name;
+    li.innerHTML =
+      `<span class="drag-handle">⠿</span>` +
+      `<label><input type="checkbox" checked /> ${d.description}</label>`;
+    list.appendChild(li);
+  });
+
   return host;
 }
 
@@ -92,7 +92,7 @@ export function analyze(root: ShadowRoot | Document = document): void {
   const messageArea = root.querySelector<HTMLElement>("#message-area");
   if (!messageArea) return;
 
-  const detectors = buildDetectors(root);
+  const detectors = buildDetectors(root, new Detectors());
   const wrapper = new Wrapper([new Inputs(detectors), new Buttons(detectors)]);
   const lines = wrapper.scan();
 

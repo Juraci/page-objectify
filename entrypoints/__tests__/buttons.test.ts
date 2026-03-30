@@ -1,14 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import Buttons from "../content/collections/buttons";
-import {
-  detectDataTest,
-  detectLabel,
-  detectClass,
-  detectPlaceholder,
-  detectRole,
-} from "../content/collections/detectors";
+import { Detectors } from "../content/collections/detectors";
 
-const allDetectors = [detectDataTest, detectLabel, detectClass, detectPlaceholder, detectRole];
+const allDetectors = new Detectors().getAll().map((d) => d.perform);
 
 describe("Buttons", () => {
   let container: HTMLDivElement;
