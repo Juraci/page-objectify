@@ -6,6 +6,7 @@ import SidePanel from "./SidePanel.vue";
 export default defineContentScript({
   matches: ["<all_urls>"],
   runAt: "document_end",
+  cssInjectionMode: "ui",
   async main(ctx) {
     const ui = await createShadowRootUi(ctx, {
       name: "page-raptor-panel",

@@ -23,7 +23,7 @@ import Buttons from "./collections/buttons";
 import Inputs from "./collections/inputs";
 import Links from "./collections/links";
 
-const isVisible = ref(true);
+const isVisible = ref(false);
 const results = ref<string[]>([]);
 const detectorList = ref<InstanceType<typeof DetectorList> | null>(null);
 

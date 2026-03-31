@@ -6,6 +6,7 @@ describe("ResultsPanel", () => {
   it("renders empty state when no lines", () => {
     const wrapper = mount(ResultsPanel, { props: { lines: [] } });
     expect(wrapper.find("#results-container").classes()).not.toContain("has-results");
+    expect(wrapper.find("#message-area").exists()).toBe(false);
   });
 
   it("shows has-results class when lines are present", () => {

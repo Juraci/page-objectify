@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { mount, VueWrapper } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { mount } from "@vue/test-utils";
+import type { VueWrapper } from "@vue/test-utils";
 import SidePanel from "../content/SidePanel.vue";
 
 async function buildPanel(html: string): Promise<{ wrapper: VueWrapper; page: HTMLDivElement }> {
@@ -9,7 +11,7 @@ async function buildPanel(html: string): Promise<{ wrapper: VueWrapper; page: HT
 
   const wrapper = mount(SidePanel, { attachTo: document.body });
   await wrapper.find("#analyze-btn").trigger("click");
-  await wrapper.vm.$nextTick();
+  await nextTick();
   return { wrapper, page };
 }
 

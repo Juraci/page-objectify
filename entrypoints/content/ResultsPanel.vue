@@ -5,7 +5,7 @@
         {{ isCopied ? "Copied!" : "Copy" }}
       </button>
     </div>
-    <div id="message-area" v-html="highlighted"></div>
+    <div v-if="props.lines.length" id="message-area" v-html="highlighted"></div>
   </div>
 </template>
 
