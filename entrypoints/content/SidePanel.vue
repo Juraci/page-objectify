@@ -4,11 +4,11 @@
       <div class="panel-header">Page Raptor</div>
       <div class="panel-body">
         <DetectorList ref="detectorList" />
-        <button id="analyze-btn" @click="handleAnalyze">Analyze Page</button>
+        <button class="btn-analyze" @click="handleAnalyze">Analyze Page</button>
         <ResultsPanel :lines="results" />
       </div>
     </div>
-    <button id="toggle-btn" @click="isVisible = !isVisible">
+    <button class="btn-toggle" @click="isVisible = !isVisible">
       {{ isVisible ? "❮" : "❯" }}
     </button>
   </div>
@@ -35,25 +35,7 @@ function handleAnalyze() {
 </script>
 
 <style>
-:host {
-  --panel-width: 500px;
-
-  /* Nord Polar Night — backgrounds */
-  --color-bg: #2e3440;
-  --color-bg-raised: #3b4252;
-  --color-bg-hover: #434c5e;
-  --color-bg-muted: #4c566a;
-  --color-bg-code: #1e2228;
-
-  /* Nord Snow Storm — text */
-  --color-text: #eceff4;
-  --color-text-muted: #d8dee9;
-
-  /* Nord Frost / Aurora — accents */
-  --color-accent: #81a1c1;
-  --color-accent-bright: #88c0d0;
-  --color-success: #a3be8c;
-}
+@import "./variables.css";
 
 .panel {
   position: fixed;
@@ -68,6 +50,11 @@ function handleAnalyze() {
   flex-direction: column;
   font-family: system-ui, sans-serif;
   font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.panel.hidden {
+  transform: translateX(100%);
 }
 
 .panel-header {
@@ -87,67 +74,7 @@ function handleAnalyze() {
   overflow: hidden;
 }
 
-#message-area {
-  flex: 1;
-  overflow-y: auto;
-}
-
-.code-block {
-  background-color: var(--color-bg-code);
-  border: 1px solid var(--color-bg-muted);
-  border-radius: 6px;
-  padding: 12px 16px;
-  margin: 0;
-  overflow-x: auto;
-  font-family: "JetBrains Mono", "Fira Code", monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  white-space: pre;
-  color: var(--color-text-muted);
-}
-
-.code-block code {
-  display: block;
-}
-
-.hl-object { color: var(--color-accent); }
-.hl-dot    { color: var(--color-accent); }
-.hl-method { color: var(--color-accent-bright); }
-.hl-paren  { color: var(--color-text); }
-.hl-string { color: var(--color-success); }
-.hl-plain  { color: var(--color-text-muted); }
-
-#results-toolbar {
-  display: none;
-  justify-content: flex-end;
-  margin-bottom: 4px;
-}
-
-#results-container {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-#results-container.has-results #results-toolbar {
-  display: flex;
-}
-
-#copy-btn {
-  padding: 4px 10px;
-  background-color: var(--color-bg-muted);
-  color: var(--color-text);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-#copy-btn:hover { background-color: var(--color-bg-hover); }
-#copy-btn.copied { background-color: var(--color-success); color: var(--color-bg); }
-
-#analyze-btn {
+.btn-analyze {
   padding: 8px 16px;
   background-color: var(--color-accent);
   color: var(--color-bg);
@@ -159,19 +86,11 @@ function handleAnalyze() {
   align-self: center;
 }
 
-#analyze-btn:hover {
+.btn-analyze:hover {
   background-color: var(--color-accent-bright);
 }
 
-.panel {
-  transition: transform 0.3s ease;
-}
-
-.panel.hidden {
-  transform: translateX(100%);
-}
-
-#toggle-btn {
+.btn-toggle {
   position: fixed;
   top: 50%;
   right: var(--panel-width);
@@ -188,60 +107,11 @@ function handleAnalyze() {
   transition: right 0.3s ease, background-color 0.15s ease;
 }
 
-#toggle-btn:hover {
+.btn-toggle:hover {
   background-color: var(--color-bg-hover);
 }
 
-.panel.hidden ~ #toggle-btn {
+.panel.hidden ~ .btn-toggle {
   right: 0;
-}
-
-.config-heading {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 6px;
-}
-
-#detector-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.detector-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 8px;
-  background-color: var(--color-bg-raised);
-  border-radius: 4px;
-  user-select: none;
-}
-
-.detector-item.drag-over {
-  outline: 2px solid var(--color-accent-bright);
-}
-
-.drag-handle {
-  cursor: grab;
-  color: var(--color-text-muted);
-  font-size: 14px;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.detector-item label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  color: var(--color-text);
-  font-size: 13px;
 }
 </style>

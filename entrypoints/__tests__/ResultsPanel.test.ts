@@ -5,22 +5,22 @@ import ResultsPanel from "../content/ResultsPanel.vue";
 describe("ResultsPanel", () => {
   it("renders empty state when no lines", () => {
     const wrapper = mount(ResultsPanel, { props: { lines: [] } });
-    expect(wrapper.find("#results-container").classes()).not.toContain("has-results");
-    expect(wrapper.find("#message-area").exists()).toBe(false);
+    expect(wrapper.find(".results-container").classes()).not.toContain("has-results");
+    expect(wrapper.find(".message-area").exists()).toBe(false);
   });
 
   it("shows has-results class when lines are present", () => {
     const wrapper = mount(ResultsPanel, {
       props: { lines: ["page.getByLabel('Email')"] },
     });
-    expect(wrapper.find("#results-container").classes()).toContain("has-results");
+    expect(wrapper.find(".results-container").classes()).toContain("has-results");
   });
 
   it("renders highlighted output in message area", () => {
     const wrapper = mount(ResultsPanel, {
       props: { lines: ["page.getByLabel('Email')"] },
     });
-    const html = wrapper.find("#message-area").html();
+    const html = wrapper.find(".message-area").html();
     expect(html).toContain("hl-method");
     expect(html).toContain("hl-string");
   });
@@ -29,7 +29,7 @@ describe("ResultsPanel", () => {
     const wrapper = mount(ResultsPanel, {
       props: { lines: ["page.getByLabel('Email')"] },
     });
-    expect(wrapper.find("#copy-btn").exists()).toBe(true);
+    expect(wrapper.find(".btn-copy").exists()).toBe(true);
   });
 
   it("copy button writes to clipboard", async () => {
@@ -41,7 +41,7 @@ describe("ResultsPanel", () => {
     });
     const lines = ["page.getByLabel('Email')"];
     const wrapper = mount(ResultsPanel, { props: { lines } });
-    await wrapper.find("#copy-btn").trigger("click");
+    await wrapper.find(".btn-copy").trigger("click");
     expect(writeText).toHaveBeenCalledWith(lines.join("\n"));
   });
 });

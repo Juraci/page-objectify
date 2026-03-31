@@ -10,7 +10,7 @@ async function buildPanel(html: string): Promise<{ wrapper: VueWrapper; page: HT
   document.body.appendChild(page);
 
   const wrapper = mount(SidePanel, { attachTo: document.body });
-  await wrapper.find("#analyze-btn").trigger("click");
+  await wrapper.find(".btn-analyze").trigger("click");
   await nextTick();
   return { wrapper, page };
 }
@@ -39,12 +39,12 @@ describe("analyzes the page elements and prints the locators", () => {
     });
 
     it("returns the detected elements after clicking analyze page", () => {
-      const text = wrapper.find("#message-area").text();
+      const text = wrapper.find(".message-area").text();
       expect(text).toContain("page.locator('[data-test-login-btn]')");
       expect(text).toContain("page.getByLabel('Cancel')");
       expect(text).toContain("page.locator('.reset-email')");
       expect(text).toContain("page.getByRole('button', { name: 'Submit' })");
-      expect(wrapper.find("#copy-btn").exists()).toBe(true);
+      expect(wrapper.find(".btn-copy").exists()).toBe(true);
     });
   });
 
@@ -62,13 +62,13 @@ describe("analyzes the page elements and prints the locators", () => {
     });
 
     it("returns the detected inputs and textareas after clicking analyze page", () => {
-      const text = wrapper.find("#message-area").text();
+      const text = wrapper.find(".message-area").text();
       expect(text).toContain("page.locator('[data-test-username]')");
       expect(text).toContain("page.locator('.email-field')");
       expect(text).toContain("page.getByLabel('Password')");
       expect(text).toContain("page.getByPlaceholder('Search')");
       expect(text).toContain("page.locator('.notes-field')");
-      expect(wrapper.find("#copy-btn").exists()).toBe(true);
+      expect(wrapper.find(".btn-copy").exists()).toBe(true);
     });
   });
 
@@ -85,12 +85,12 @@ describe("analyzes the page elements and prints the locators", () => {
     });
 
     it("returns the detected links after clicking analyze page", () => {
-      const text = wrapper.find("#message-area").text();
+      const text = wrapper.find(".message-area").text();
       expect(text).toContain("page.locator('[data-test-home-link]')");
       expect(text).toContain("page.locator('.about-link')");
       expect(text).toContain("page.getByLabel('Contact')");
       expect(text).toContain("page.getByRole('link', { name: 'Login' })");
-      expect(wrapper.find("#copy-btn").exists()).toBe(true);
+      expect(wrapper.find(".btn-copy").exists()).toBe(true);
     });
   });
 
@@ -103,7 +103,7 @@ describe("analyzes the page elements and prints the locators", () => {
     });
 
     it("returns the selector only once after clicking analyze page", () => {
-      const text = wrapper.find("#message-area").text();
+      const text = wrapper.find(".message-area").text();
       expect(text).toContain("page.locator('[data-test-btn]')");
       const matches = text.match(/page\.locator\('\[data-test-btn\]'\)/g) ?? [];
       expect(matches).toHaveLength(1);

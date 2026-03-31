@@ -1,0 +1,19 @@
+:host {
+  --panel-width: 500px;
+
+  /* Nord Polar Night — backgrounds */
+  --color-bg: #2e3440;
+  --color-bg-raised: #3b4252;
+  --color-bg-hover: #434c5e;
+  --color-bg-muted: #4c566a;
+  --color-bg-code: #1e2228;
+
+  /* Nord Snow Storm — text */
+  --color-text: #eceff4;
+  --color-text-muted: #d8dee9;
+
+  /* Nord Frost / Aurora — accents */
+  --color-accent: #81a1c1;
+  --color-accent-bright: #88c0d0;
+  --color-success: #a3be8c;
+}

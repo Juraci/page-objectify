@@ -1,7 +1,7 @@
 <template>
-  <div id="detector-config">
+  <div class="detector-config">
     <div class="config-heading">Detection Priority</div>
-    <ul id="detector-list">
+    <ul class="detector-list">
       <li
         v-for="(detector, index) in detectors"
         :key="detector.name"
@@ -74,3 +74,60 @@ function getActiveDetectors(): Detector[] {
 
 defineExpose({ getActiveDetectors });
 </script>
+
+<style>
+@import "./variables.css";
+
+.detector-config {
+  /* container for the detector configuration section */
+}
+
+.config-heading {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.detector-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detector-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  background-color: var(--color-bg-raised);
+  border-radius: 4px;
+  user-select: none;
+}
+
+.detector-item.drag-over {
+  outline: 2px solid var(--color-accent-bright);
+}
+
+.drag-handle {
+  cursor: grab;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.detector-item label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 13px;
+}
+</style>

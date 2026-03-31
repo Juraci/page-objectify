@@ -25,14 +25,18 @@ describe("DetectorList", () => {
     const allCount = new Detectors().getAll().length;
     const firstCheckbox = wrapper.find<HTMLInputElement>("input[type='checkbox']");
     await firstCheckbox.setValue(false);
-    const active = (wrapper.vm as { getActiveDetectors: () => unknown[] }).getActiveDetectors();
+    const active = (
+      wrapper.vm as unknown as { getActiveDetectors: () => unknown[] }
+    ).getActiveDetectors();
     expect(active).toHaveLength(allCount - 1);
   });
 
   it("getActiveDetectors returns Detector functions", async () => {
     const wrapper = mount(DetectorList);
     await nextTick();
-    const active = (wrapper.vm as { getActiveDetectors: () => unknown[] }).getActiveDetectors();
+    const active = (
+      wrapper.vm as unknown as { getActiveDetectors: () => unknown[] }
+    ).getActiveDetectors();
     expect(active.length).toBeGreaterThan(0);
     active.forEach((d) => expect(typeof d).toBe("function"));
   });
