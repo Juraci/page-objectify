@@ -6,4 +6,7 @@ export default defineConfig({
   manifest: {
     permissions: [],
   },
+  zip: {
+    artifactTemplate: "{{name}}-v{{version}}.zip",
+  },
 });

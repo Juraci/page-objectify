@@ -15,6 +15,12 @@ npm run test:watch    # Run tests in watch mode
 npm run test:coverage # Generate coverage report
 ```
 
+Release a new version:
+```bash
+git tag v1.2.3 && git push --tags
+./bin/release.sh   # syncs package.json version, builds, zips to .output/page-raptor-v1.2.3.zip
+```
+
 Run a single test file:
 ```bash
 npx vitest run entrypoints/__tests__/content.test.ts
@@ -26,11 +32,13 @@ npx vitest run entrypoints/__tests__/content.test.ts
 
 ### Flow
 
-1. `entrypoints/content/index.ts` — content script entry point; injects a side panel into the page via **Shadow DOM** to avoid style leakage. Exports `createSidePanel()`, `analyze()`, and `injectSidePanel()`.
-2. `entrypoints/content/panel.html` — UI template for the side panel (fixed right panel, dark Nord theme, 500px wide). Includes a "Detection Priority" section with draggable, checkbox-enabled detector items.
-3. `entrypoints/content/wrapper.ts` — `Wrapper` class orchestrates all registered `ElementCollection` scanners and aggregates their results.
-4. `entrypoints/content/collections/buttons.ts` — implements `ElementCollection` for buttons; receives an ordered `Detector[]` via constructor and emits Playwright locator strings.
-5. `entrypoints/content/collections/inputs.ts` — implements `ElementCollection` for inputs and textareas; same `Detector[]` pattern.
+1. `entrypoints/content/index.ts` — content script entry point; mounts `SidePanel.vue` into the page via WXT's `createShadowRootUi` (Shadow DOM, no style leakage).
+2. `entrypoints/content/SidePanel.vue` — root Vue component; owns panel visibility, triggers analysis, passes results to `ResultsPanel.vue`.
+3. `entrypoints/content/DetectorList.vue` — renders the draggable, checkbox-enabled detector priority list; exposes `getActiveDetectors()` to the parent.
+4. `entrypoints/content/ResultsPanel.vue` — displays syntax-highlighted locator results with a copy button.
+5. `entrypoints/content/wrapper.ts` — `Wrapper` class orchestrates all registered `ElementCollection` scanners and aggregates their results.
+6. `entrypoints/content/collections/buttons.ts` — implements `ElementCollection` for buttons; receives an ordered `Detector[]` via constructor and emits Playwright locator strings.
+7. `entrypoints/content/collections/inputs.ts` — implements `ElementCollection` for inputs and textareas; same `Detector[]` pattern.
 
 ### Detectors
 
@@ -60,4 +68,4 @@ To support a new element type, create a file under `entrypoints/content/collecti
 
 ### Testing
 
-Tests live in `entrypoints/__tests__/`. The environment is **happy-dom** (via Vitest), so no real browser is required. Unit tests cover panel DOM construction; integration tests run a full analyze cycle against sample HTML fixtures.
+Tests live in `entrypoints/__tests__/`. The environment is **happy-dom** (via Vitest), so no real browser is required. Vue component tests use `@vue/test-utils` (`SidePanel.test.ts`, `DetectorList.test.ts`, `ResultsPanel.test.ts`); integration tests run a full analyze cycle against sample HTML fixtures.

@@ -17,6 +17,7 @@ Inject a side panel into any page, click **Analyze Page**, and get ready-to-use 
 - Configurable detection priority — drag to reorder, toggle detectors on/off
 - Copy results to clipboard with one click
 - Isolated via Shadow DOM — no style conflicts with the host page
+- UI built with Vue 3 SFCs
 
 ## Development
 
@@ -28,3 +29,9 @@ npm run test     # run tests
 ```
 
 Load the extension from `.output/chrome-mv3/` in Chrome's `chrome://extensions` page (Developer mode on).
+
+## Releasing
+
+1. Create and push a git tag: `git tag v1.2.3 && git push --tags`
+2. Run `./bin/release.sh` — it syncs `package.json` to the tag version, builds, and zips the extension
+3. Upload `.output/page-raptor-v1.2.3.zip` to the Chrome Web Store

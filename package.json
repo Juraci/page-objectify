@@ -1,6 +1,6 @@
 {
   "name": "page-raptor",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Page Raptor Chrome Extension",
   "private": true,
   "type": "module",
