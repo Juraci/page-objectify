@@ -29,7 +29,11 @@ const detectorList = ref<InstanceType<typeof DetectorList> | null>(null);
 
 function handleAnalyze() {
   const detectors = detectorList.value?.getActiveDetectors() ?? [];
-  const wrapper = new Wrapper([new Inputs(detectors), new Buttons(detectors), new Links(detectors)]);
+  const wrapper = new Wrapper([
+    new Inputs(detectors),
+    new Buttons(detectors),
+    new Links(detectors),
+  ]);
   results.value = wrapper.scan();
 }
 </script>
@@ -104,7 +108,9 @@ function handleAnalyze() {
   font-size: 16px;
   line-height: 1;
   z-index: 2147483647;
-  transition: right 0.3s ease, background-color 0.15s ease;
+  transition:
+    right 0.3s ease,
+    background-color 0.15s ease;
 }
 
 .btn-toggle:hover {

@@ -16,12 +16,14 @@ npm run test:coverage # Generate coverage report
 ```
 
 Release a new version:
+
 ```bash
 git tag v1.2.3 && git push --tags
 ./bin/release.sh   # syncs package.json version, builds, zips to .output/page-raptor-v1.2.3.zip
 ```
 
 Run a single test file:
+
 ```bash
 npx vitest run entrypoints/__tests__/content.test.ts
 ```
@@ -50,13 +52,13 @@ type Detector = (el: HTMLElement, document: Document) => string | null;
 
 Each detector returns a Playwright locator string or `null` if it cannot match the element. Collections try detectors in array order and use the first non-null result.
 
-| Export | Matches | Locator produced |
-|---|---|---|
-| `detectDataTest` | any `data-test*` attribute | `page.locator('[data-test-id]')` |
-| `detectLabel` | `aria-label` or `<label for="">` | `page.getByLabel('...')` |
-| `detectClass` | `className` (first 2 classes) | `page.locator('.a.b')` |
-| `detectPlaceholder` | `placeholder` (length > 3) | `page.getByPlaceholder('...')` |
-| `detectRole` | implicit ARIA role from tag (`button`, `a`) or explicit `role` attr + text content (length > 3) | `page.getByRole('button', { name: '...' })` |
+| Export              | Matches                                                                                         | Locator produced                            |
+| ------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `detectDataTest`    | any `data-test*` attribute                                                                      | `page.locator('[data-test-id]')`            |
+| `detectLabel`       | `aria-label` or `<label for="">`                                                                | `page.getByLabel('...')`                    |
+| `detectClass`       | `className` (first 2 classes)                                                                   | `page.locator('.a.b')`                      |
+| `detectPlaceholder` | `placeholder` (length > 3)                                                                      | `page.getByPlaceholder('...')`              |
+| `detectRole`        | implicit ARIA role from tag (`button`, `a`) or explicit `role` attr + text content (length > 3) | `page.getByRole('button', { name: '...' })` |
 
 The panel reads the current state of `#detector-list` (DOM order = priority, checkboxes = enabled) on every "Analyze Page" click via `buildDetectors()` in `index.ts`. Both `Buttons` and `Inputs` receive the same resolved detector array.
 

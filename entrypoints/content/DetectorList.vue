@@ -67,9 +67,7 @@ function onDragEnd() {
 
 function getActiveDetectors(): Detector[] {
   const factory = new Detectors();
-  return detectors.value
-    .filter((d) => d.enabled)
-    .map((d) => factory.getByName(d.name).perform);
+  return detectors.value.filter((d) => d.enabled).map((d) => factory.getByName(d.name).perform);
 }
 
 defineExpose({ getActiveDetectors });

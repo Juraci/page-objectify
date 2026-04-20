@@ -64,8 +64,13 @@ function copyToClipboard() {
   font-size: 12px;
 }
 
-.btn-copy:hover { background-color: var(--color-bg-hover); }
-.btn-copy.copied { background-color: var(--color-success); color: var(--color-bg); }
+.btn-copy:hover {
+  background-color: var(--color-bg-hover);
+}
+.btn-copy.copied {
+  background-color: var(--color-success);
+  color: var(--color-bg);
+}
 
 .code-block {
   background-color: var(--color-bg-code);
@@ -85,10 +90,22 @@ function copyToClipboard() {
   display: block;
 }
 
-.hl-object { color: var(--color-accent); }
-.hl-dot    { color: var(--color-accent); }
-.hl-method { color: var(--color-accent-bright); }
-.hl-paren  { color: var(--color-text); }
-.hl-string { color: var(--color-success); }
-.hl-plain  { color: var(--color-text-muted); }
+.hl-object {
+  color: var(--color-accent);
+}
+.hl-dot {
+  color: var(--color-accent);
+}
+.hl-method {
+  color: var(--color-accent-bright);
+}
+.hl-paren {
+  color: var(--color-text);
+}
+.hl-string {
+  color: var(--color-success);
+}
+.hl-plain {
+  color: var(--color-text-muted);
+}
 </style>
